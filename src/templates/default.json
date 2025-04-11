@@ -1,0 +1,19 @@
+{
+    "sections": [
+      {
+        "id": "header",
+        "name": "Header Section",
+        "allowedElements": ["text", "image"]
+      },
+      {
+        "id": "main",
+        "name": "Main Content",
+        "allowedElements": ["text", "image", "button"]
+      },
+      {
+        "id": "footer",
+        "name": "Footer",
+        "allowedElements": ["text", "button"]
+      }
+    ]
+  }
