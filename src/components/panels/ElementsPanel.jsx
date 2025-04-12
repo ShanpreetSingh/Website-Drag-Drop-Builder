@@ -7,21 +7,6 @@ const elementTypes = [
   { type: 'button', label: 'Button', icon: '🔘' },
 ];
 
-export default function ElementsPanel() {
-  return (
-    <Box sx={{ p: 2, backgroundColor: '#f5f5f5' }}>
-      <Typography variant="h6" gutterBottom>
-        Elements
-      </Typography>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        {elementTypes.map((item) => (
-          <DraggableElement key={item.type} {...item} />
-        ))}
-      </Box>
-    </Box>
-  );
-}
-
 function DraggableElement({ type, label, icon }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ELEMENT',
@@ -41,11 +26,26 @@ function DraggableElement({ type, label, icon }) {
         flexDirection: 'column',
         height: 80,
         width: 80,
-        m: 1,
+        m: 1
       }}
     >
       <Typography variant="h5">{icon}</Typography>
       <Typography variant="caption">{label}</Typography>
     </Button>
+  );
+}
+
+export default function ElementsPanel() {
+  return (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6" gutterBottom>
+        Elements
+      </Typography>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        {elementTypes.map((item) => (
+          <DraggableElement key={item.type} {...item} />
+        ))}
+      </Box>
+    </Box>
   );
 }

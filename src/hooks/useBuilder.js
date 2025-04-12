@@ -1,59 +1,49 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-const useBuilder = () => {
+export default function useBuilder() {
   const [elements, setElements] = useState([]);
   const [selectedElementId, setSelectedElementId] = useState(null);
 
-  const addElement = (type, sectionId) => {
+  const addElement = useCallback((type, sectionId) => {
+    const defaultValues = {
+      text: {
+        content: 'New Text',
+        styles: { color: '#000000', fontSize: '16px' }
+      },
+      image: {
+        src: '',
+        alt: '',
+        styles: { width: '100%' }
+      },
+      button: {
+        text: 'Button',
+        styles: { backgroundColor: '#1976d2', color: '#ffffff' }
+      }
+    };
+
     const newElement = {
       id: `el-${Date.now()}`,
       type,
       sectionId,
-      ...(type === 'text' && { 
-        content: 'New Text', 
-        styles: { 
-          color: '#000000',
-          fontSize: '16px'
-        } 
-      }),
-      ...(type === 'image' && { 
-        src: '', 
-        alt: '', 
-        styles: { 
-          width: '100%' 
-        } 
-      }),
-      ...(type === 'button' && { 
-        text: 'Button', 
-        styles: { 
-          backgroundColor: '#1976d2',
-          color: '#ffffff'
-        } 
-      })
+      ...defaultValues[type]
     };
-    setElements([...elements, newElement]);
+
+    setElements(prev => [...prev, newElement]);
     setSelectedElementId(newElement.id);
     return newElement;
-  };
+  }, []);
 
-  const updateElement = (id, updates) => {
-    setElements(elements.map(el => 
-      el.id === id ? { ...el, ...updates } : el
-    ));
-  };
-
-  const selectElement = (id) => {
-    setSelectedElementId(id);
-  };
+  const updateElement = useCallback((id, updates) => {
+    setElements(prev =>
+      prev.map(el => (el.id === id ? { ...el, ...updates } : el))
+    );
+  }, []);
 
   return {
     elements,
-    selectedElement: elements.find(el => el.id === selectedElementId),
     addElement,
     updateElement,
-    selectElement,
-    selectedElementId
+    selectedElement: elements.find(el => el.id === selectedElementId),
+    selectElement: setSelectedElementId
   };
-};
-
-export default useBuilder;
+}

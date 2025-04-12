@@ -1,12 +1,15 @@
 import { useDrop } from 'react-dnd';
-import Section from './Section';
 import { Box, Typography } from '@mui/material';
+import Section from './Section';
 import template from '../../templates/default.json';
 
-export default function Canvas({ elements = [], addElement }) {
+export default function Canvas({ elements = [], addElement, selectElement }) {
   const [{ canDrop }, drop] = useDrop(() => ({
     accept: 'ELEMENT',
-    drop: (item) => addElement(item.type, 'main'),
+    drop: (item, monitor) => {
+      const offset = monitor.getClientOffset();
+      addElement(item.type, 'main', offset);
+    },
     collect: (monitor) => ({
       canDrop: monitor.canDrop(),
     }),
@@ -16,10 +19,10 @@ export default function Canvas({ elements = [], addElement }) {
     <Box
       ref={drop}
       sx={{
-        backgroundColor: canDrop ? '#f0f0f0' : 'white',
+        backgroundColor: canDrop ? 'action.hover' : 'background.paper',
         p: 2,
-        border: '1px dashed #ccc',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        position: 'relative'
       }}
     >
       {template.sections.map((section) => (
@@ -27,12 +30,16 @@ export default function Canvas({ elements = [], addElement }) {
           key={section.id}
           section={section}
           elements={elements.filter(el => el.sectionId === section.id)}
+          onSelect={selectElement}
         />
       ))}
+      
       {elements.length === 0 && (
-        <Typography color="textSecondary">
-          Drag elements here
-        </Typography>
+        <Box sx={{ textAlign: 'center', pt: 10 }}>
+          <Typography variant="body1" color="text.secondary">
+            Drag elements here to begin
+          </Typography>
+        </Box>
       )}
     </Box>
   );

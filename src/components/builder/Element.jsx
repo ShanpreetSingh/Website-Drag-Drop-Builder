@@ -1,11 +1,12 @@
-import { Box , Typography } from '@mui/material';
-const Element = ({ element, isSelected, onSelect }) => {
+import { Box, Typography } from '@mui/material';
+
+export default function Element({ element, isSelected, onSelect }) {
   const renderElement = () => {
     switch (element.type) {
       case 'text':
         return (
           <Typography sx={element.styles}>
-            {element.content || 'Double click to edit text'}
+            {element.content}
           </Typography>
         );
       case 'image':
@@ -25,16 +26,13 @@ const Element = ({ element, isSelected, onSelect }) => {
           <Box
             component="button"
             sx={{
-              padding: '8px 16px',
-              backgroundColor: '#1976d2',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
+              px: 2,
+              py: 1,
+              borderRadius: 1,
               ...element.styles
             }}
           >
-            {element.text || 'Button'}
+            {element.text}
           </Box>
         );
       default:
@@ -46,19 +44,13 @@ const Element = ({ element, isSelected, onSelect }) => {
     <Box
       onClick={onSelect}
       sx={{
-        border: isSelected ? '2px solid #1976d2' : '2px solid transparent',
-        borderRadius: '4px',
+        border: isSelected ? '2px solid primary.main' : '2px solid transparent',
         p: 1,
         mb: 1,
-        cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: '#f5f5f5'
-        }
+        cursor: 'pointer'
       }}
     >
       {renderElement()}
     </Box>
   );
-};
-
-export default Element;
+}

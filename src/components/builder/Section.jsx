@@ -1,33 +1,25 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Element from './Element';
-import useBuilder from '../../hooks/useBuilder';
 
-const Section = ({ section, elements }) => {
-  const { selectedElementId, selectElement } = useBuilder();
-
+export default function Section({ section, elements, onSelect }) {
   return (
-    <Box
-      sx={{
-        border: '1px dashed #ccc',
-        borderRadius: 1,
-        p: 2,
+    <Box sx={{ mb: 4 }}>
+      <Box sx={{ 
+        borderBottom: '1px solid',
+        borderColor: 'divider',
         mb: 2,
-        minHeight: '100px'
-      }}
-    >
-      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        pb: 1
+      }}>
         {section.name}
-      </Typography>
+      </Box>
       {elements.map((element) => (
         <Element
           key={element.id}
           element={element}
-          isSelected={element.id === selectedElementId}
-          onSelect={() => selectElement(element.id)}
+          isSelected={false}
+          onSelect={() => onSelect(element.id)}
         />
       ))}
     </Box>
   );
-};
-
-export default Section;
+}
