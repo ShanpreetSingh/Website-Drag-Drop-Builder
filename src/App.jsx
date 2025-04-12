@@ -1,22 +1,11 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend';
-import { Box, CssBaseline, useMediaQuery } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import ElementsPanel from './components/panels/ElementsPanel';
 import Builder from './components/builder/Canvas';
 import PropertiesPanel from './components/panels/PropertiesPanel';
+import Header from './components/Header';
 import useBuilder from './hooks/useBuilder';
-
-const BackendProvider = ({ children }) => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  const backend = isMobile ? TouchBackend : HTML5Backend;
-  
-  return (
-    <DndProvider backend={backend} options={{ enableMouseEvents: true }}>
-      {children}
-    </DndProvider>
-  );
-};
 
 export default function App() {
   const builder = useBuilder();
@@ -24,17 +13,26 @@ export default function App() {
   return (
     <>
       <CssBaseline />
-      <BackendProvider>
+      <DndProvider backend={HTML5Backend}>
         <Box sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: '250px 1fr 300px' },
-          height: '100vh'
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          bgcolor: '#f8fafc'
         }}>
-          <ElementsPanel />
-          <Builder {...builder} />
-          <PropertiesPanel {...builder} />
+          <Header />
+          <Box sx={{
+            display: 'flex',
+            flex: 1,
+            p: 3,
+            gap: 3
+          }}>
+            <ElementsPanel />
+            <Builder {...builder} />
+            <PropertiesPanel {...builder} />
+          </Box>
         </Box>
-      </BackendProvider>
+      </DndProvider>
     </>
   );
 }

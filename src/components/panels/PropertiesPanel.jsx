@@ -52,7 +52,6 @@ export default function PropertiesPanel({ selectedElement, updateElement }) {
               />
             </>
           )}
-          {/* Add other element types here */}
         </Form>
       </Formik>
     </Box>

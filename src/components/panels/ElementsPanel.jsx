@@ -1,13 +1,18 @@
 import { useDrag } from 'react-dnd';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
+import {
+  TextFields as TextIcon,
+  Image as ImageIcon,
+  SmartButton as ButtonIcon
+} from '@mui/icons-material';
 
-const elementTypes = [
-  { type: 'text', label: 'Text', icon: 'T' },
-  { type: 'image', label: 'Image', icon: '📷' },
-  { type: 'button', label: 'Button', icon: '🔘' },
+const elements = [
+  { type: 'text', label: 'Text Block', icon: <TextIcon />, color: '#6366f1' },
+  { type: 'image', label: 'Image', icon: <ImageIcon />, color: '#10b981' },
+  { type: 'button', label: 'Button', icon: <ButtonIcon />, color: '#ef4444' }
 ];
 
-function DraggableElement({ type, label, icon }) {
+const DraggableElement = ({ type, label, icon, color }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ELEMENT',
     item: { type },
@@ -17,35 +22,60 @@ function DraggableElement({ type, label, icon }) {
   }));
 
   return (
-    <Button
+    <Box
       ref={drag}
-      variant="outlined"
       sx={{
-        opacity: isDragging ? 0.5 : 1,
         display: 'flex',
-        flexDirection: 'column',
-        height: 80,
-        width: 80,
-        m: 1
+        alignItems: 'center',
+        gap: 2,
+        p: 1.5,
+        borderRadius: '8px',
+        bgcolor: isDragging ? '#f1f5f9' : 'white',
+        border: `1px solid ${isDragging ? color : '#e2e8f0'}`,
+        cursor: 'grab',
+        opacity: isDragging ? 0.8 : 1,
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+          transform: 'translateY(-1px)'
+        }
       }}
     >
-      <Typography variant="h5">{icon}</Typography>
-      <Typography variant="caption">{label}</Typography>
-    </Button>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 32,
+        height: 32,
+        borderRadius: '6px',
+        bgcolor: `${color}20`,
+        color: color
+      }}>
+        {icon}
+      </Box>
+      <Typography variant="body2" fontWeight={500}>
+        {label}
+      </Typography>
+    </Box>
   );
-}
+};
 
 export default function ElementsPanel() {
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Elements
+    <Paper elevation={0} sx={{ 
+      width: 280, 
+      p: 2,
+      borderRadius: '12px',
+      border: '1px solid #e2e8f0'
+    }}>
+      <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2, pl: 1 }}>
+        Design Elements
       </Typography>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-        {elementTypes.map((item) => (
+      <Box sx={{ display: 'grid', gap: 1 }}>
+        {elements.map((item) => (
           <DraggableElement key={item.type} {...item} />
         ))}
       </Box>
-    </Box>
+    </Paper>
   );
 }
