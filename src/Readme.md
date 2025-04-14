@@ -71,15 +71,6 @@ src/
    - Custom hooks for state management
    - Well-documented components
 
-##  Assignment Requirements Checklist
-
-| Requirement | Status |
-|-------------|--------|
-| Drag-and-drop functionality | ✅ Implemented |
-| Form-based property editing | ✅ Implemented |
-| Responsive design | ✅ Mobile/desktop |
-| Scalable architecture | ✅ Component-based |
-| Code quality | ✅ ESLint/Prettier |
 
 
 
@@ -91,5 +82,3 @@ This prototype demonstrates:
 - Professional UI/UX improvements
 - Clean, maintainable code structure
 
-Built as part of the Websites.co.in frontend developer assignment.
-```
